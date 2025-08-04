@@ -1,11 +1,34 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "heading_1we1231": {
       "type": "heading",
-      "settings": {}
+      "settings": {
+        "title": "Hello world"
+      }
+    },
+    "featured_products_gyU8zX": {
+      "type": "featured-products",
+      "name": "Feature Products",
+      "settings": {
+        "products": [
+          "lexus-lx-600",
+          "nissan-patrol",
+          "range-rover-vogue"
+        ]
+      }
     }
   },
   "order": [
-    "heading_1we1231"
+    "heading_1we1231",
+    "featured_products_gyU8zX"
   ]
 }

@@ -1,0 +1,201 @@
+{{ 'splide-skyblue.min.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'splide.min.js' | asset_url }}"></script>
+<style>
+  .splide {
+    margin: 0 auto;
+  }
+
+  .thumbnails {
+    display: flex;
+    margin: 1rem auto 0;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .thumbnail {
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    list-style: none;
+    margin: 0 0.2rem;
+    cursor: pointer;
+    opacity: 0.3;
+  }
+
+  .splide__slide.is-active {
+    min-width: 500px;
+  }
+
+  .thumbnail.is-active {
+    opacity: 1;
+  }
+
+  .thumbnail img {
+    width: 100%;
+    height: auto;
+  }
+</style>
+
+<div class="product-page">
+  <!-- Left Pane: Images -->
+  <div class="product-images">
+    <section id="main-slider" class="splide" aria-label="My Awesome Gallery">
+      <div class="splide__track">
+        <ul class="splide__list">
+          {%- for product_media in product.media -%}
+            <li class="splide__slide">
+              <img src="{{ product_media.preview_image | image_url: width: 700 }}" alt="{{ product_media.alt }}">
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </section>
+
+    <ul id="thumbnails" class="thumbnails">
+      {%- for product_media in product.media -%}
+        <li class="thumbnail">
+          <img src="{{ product_media.preview_image | image_url: width: 700 }}" alt="{{ product_media.alt }}">
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  <!-- Right Pane: Info -->
+  <div class="product-details">
+    <h1 class="product-title">{{ product.title }}</h1>
+    <p class="product-price">{{ product.price | money_with_currency }}</p>
+    <div class="product-description">
+      {{ product.description }}
+    </div>
+    <button class="add-to-cart">Add to Cart</button>
+  </div>
+</div>
+
+<script>
+  var splide = new Splide('#main-slider', {
+    width: 600,
+    height: 300,
+    pagination: false,
+    cover: true,
+  });
+
+  var thumbnails = document.getElementsByClassName('thumbnail');
+  var current;
+
+  for (var i = 0; i < thumbnails.length; i++) {
+    initThumbnail(thumbnails[i], i);
+  }
+
+  function initThumbnail(thumbnail, index) {
+    thumbnail.addEventListener('click', function () {
+      splide.go(index);
+    });
+  }
+
+  splide.on('mounted move', function () {
+    var thumbnail = thumbnails[splide.index];
+
+    if (thumbnail) {
+      if (current) {
+        current.classList.remove('is-active');
+      }
+
+      thumbnail.classList.add('is-active');
+      current = thumbnail;
+    }
+  });
+
+  splide.mount();
+</script>
+
+<style>
+  .product-page {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .product-images {
+    flex: 1 1 45%;
+  }
+
+  .main-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .thumbnail-gallery {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+
+  .thumbnail-gallery img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .product-details {
+    flex: 1 1 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .product-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .product-price {
+    font-size: 1.5rem;
+    color: #e60023;
+    margin-bottom: 20px;
+  }
+
+  .product-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .add-to-cart {
+    padding: 14px 24px;
+    font-size: 1rem;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .add-to-cart:hover {
+    background-color: #333;
+  }
+
+  /* Responsive for smaller screens */
+  @media (max-width: 768px) {
+    .product-page {
+      flex-direction: column;
+    }
+
+    .product-images,
+    .product-details {
+      flex: 1 1 100%;
+    }
+
+    .thumbnail-gallery {
+      justify-content: flex-start;
+    }
+  }
+</style>
