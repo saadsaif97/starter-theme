@@ -1,0 +1,20 @@
+<h1>{{ section.settings.title }}</h1>
+
+{% schema %}
+  {
+    "name": "Heading",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Hello world"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Heading"
+      }
+    ]
+  }
+{% endschema %}

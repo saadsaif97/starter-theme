@@ -1,0 +1,78 @@
+<div class="product-grid">
+  <div class="product-card">
+    <a href="/products/product-handle">
+      <img src="https://via.placeholder.com/300x400" alt="Product Title" class="product-image">
+      <h2 class="product-title">Product Title</h2>
+      <p class="product-price">$49.99</p>
+    </a>
+  </div>
+
+  <div class="product-card">
+    <a href="/products/another-product">
+      <img src="https://via.placeholder.com/300x400" alt="Another Product" class="product-image">
+      <h2 class="product-title">Another Product</h2>
+      <p class="product-price">$59.99</p>
+    </a>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Feature Products",
+    "settings": [
+
+    ],
+    "presets": [
+      {
+        "name": "Feature Products"
+      }
+    ]
+  }
+{% endschema %}
+
+
+<style>
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .product-card {
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .product-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-card a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    padding: 0 0 16px;
+  }
+
+  .product-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 12px 16px 6px;
+  }
+
+  .product-price {
+    font-size: 0.95rem;
+    color: #333;
+    margin: 0 16px;
+  }
+</style>
