@@ -1,0 +1,61 @@
+<div class="quantity-wrapper">
+  <button type="button" class="qty-btn minus">−</button>
+  <input type="number" name="quantity" value="1" min="1" class="qty-input">
+  <button type="button" class="qty-btn plus">+</button>
+</div>
+
+<script>
+  document.querySelectorAll('.quantity-wrapper').forEach(wrapper => {
+    const input = wrapper.querySelector('.qty-input');
+    const plusBtn = wrapper.querySelector('.plus');
+    const minusBtn = wrapper.querySelector('.minus');
+
+    plusBtn.addEventListener('click', () => {
+      input.value = parseInt(input.value) + 1;
+      console.log(document.querySelector("[name='quantity']").value)
+    });
+
+    minusBtn.addEventListener('click', () => {
+      if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+      }
+    });
+  });
+</script>
+
+
+<style>
+  .quantity-wrapper {
+    margin: 20px 0;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    width: fit-content;
+    height: 40px;
+  }
+
+  .qty-input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    font-size: 16px;
+    outline: none;
+  }
+
+  .qty-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: #f1f1f1;
+    font-size: 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s ease;
+  }
+
+  .qty-btn:hover {
+    background-color: #e0e0e0;
+  }
+</style>

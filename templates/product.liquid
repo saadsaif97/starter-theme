@@ -67,7 +67,13 @@
     <div class="product-description">
       {{ product.description }}
     </div>
-    <button class="add-to-cart">Add to Cart</button>
+    {% form 'product', product %}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+      {% render 'qty' %}
+
+      <button type="submit" class="add-to-cart">Add to Cart</button>
+    {% endform %}
   </div>
 </div>
 
@@ -175,6 +181,7 @@
     color: #fff;
     border: none;
     border-radius: 6px;
+    width: 100%;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
