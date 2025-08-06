@@ -31,7 +31,9 @@
               <input type="number" value="{{ item.quantity }}" min="1" class="qty-input">
               <button class="qty-btn plus">+</button>
             </div>
-            <a href="{{ item.url_to_remove }}" class="remove-btn">Remove</a>
+            <delete-btn>
+              <a href="{{ item.url_to_remove }}" class="remove-btn">Remove</a>
+            </delete-btn>
           </div>
         </div>
       {%- endfor -%}
@@ -81,6 +83,29 @@
   cartOverlay.addEventListener('click', () => {
     closeCartDrawer();
   });
+
+  document.addEventListener("refresh:cart", (e) => {
+    refreshCartDrawer()
+  })
+
+  async function refreshCartDrawer() {
+    try {
+      const response = await fetch('/?section_id=cart-drawer');
+      if (!response.ok) throw new Error('Failed to fetch cart drawer');
+
+      const html = await response.text();
+      const parser = new DOMParser();
+      const dom = parser.parseFromString(html, 'text/html');
+      document.querySelector("#cart-drawer #items").innerHTML = dom.querySelector("#items").innerHTML
+      document.querySelector("#cart-drawer #cart-total").innerHTML = dom.querySelector("#cart-total").innerHTML
+
+      if (dom.querySelector("[cart-empty]")) {
+        document.querySelector(".cart-footer").style.display = "none";
+      }
+    } catch (error) {
+      console.error('Error refreshing cart drawer:', error);
+    }
+  }
 </script>
 
 <style>

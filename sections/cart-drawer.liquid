@@ -1,21 +1,28 @@
 <div id="items">
-  {%- for item in cart.items -%}
-    <div class="cart-item">
-      <img src="{{ item.image |  image_url: width: 300 }}" alt="{{ item.title }}">
-      <div class="item-details">
-        <p class="item-title">{{ item.title }}</p>
-        <p class="item-price">{{ item.price | money_with_currency }}</p>
-        <div class="quantity-wrapper">
-          <button class="qty-btn minus">−</button>
-          <input type="number" value="{{ item.quantity }}" min="1" class="qty-input">
-          <button class="qty-btn plus">+</button>
-        </div>
-        <a href="{{ item.url_to_remove }}" class="remove-btn">Remove</a>
-      </div>
+  {%- if cart.empty? -%}
+    <div class="cart-item" cart-empty>
+      <p>Cart is empty</p>
     </div>
-  {%- endfor -%}
+  {%- else -%}
+    {%- for item in cart.items -%}
+      <div class="cart-item">
+        <img src="{{ item.image |  image_url: width: 300 }}" alt="{{ item.title }}">
+        <div class="item-details">
+          <p class="item-title">{{ item.title }}</p>
+          <p class="item-price">{{ item.price | money_with_currency }}</p>
+          <div class="quantity-wrapper">
+            <button class="qty-btn minus">−</button>
+            <input type="number" value="{{ item.quantity }}" min="1" class="qty-input">
+            <button class="qty-btn plus">+</button>
+          </div>
+          <delete-btn>
+            <a href="{{ item.url_to_remove }}" class="remove-btn">Remove</a>
+          </delete-btn>
+        </div>
+      </div>
+    {%- endfor -%}
+  {%- endif -%}
 </div>
-
 
 <div id="cart-total">
   Subtotal: <strong>{{ cart.total_price | money_with_currency }}</strong>
