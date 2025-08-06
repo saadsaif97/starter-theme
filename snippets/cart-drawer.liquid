@@ -1,0 +1,233 @@
+<!-- Cart Drawer Trigger Button -->
+<button id="open-cart" class="open-cart-btn">🛒 Cart</button>
+
+<!-- Cart Drawer -->
+<div id="cart-drawer" class="cart-drawer">
+  <div class="cart-header">
+    <h2>Your Cart</h2>
+    <button id="close-cart" class="close-cart-btn">&times;</button>
+  </div>
+
+  {%- if cart.empty? -%}
+    <p>Cart is empty</p>
+  {%- else -%}
+    <div class="cart-items" id="items">
+      <!-- Example cart item -->
+
+      {%- for item in cart.items -%}
+        <div class="cart-item">
+          <img src="{{ item.image |  image_url: width: 300 }}" alt="{{ item.title }}">
+          <div class="item-details">
+            <p class="item-title">{{ item.title }}</p>
+            <p class="item-price">{{ item.price | money_with_currency }}</p>
+            <div class="quantity-wrapper">
+              <button class="qty-btn minus">−</button>
+              <input type="number" value="{{ item.quantity }}" min="1" class="qty-input">
+              <button class="qty-btn plus">+</button>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+
+      <!-- Repeat for more items -->
+    </div>
+
+    <div class="cart-footer">
+      <p class="subtotal" id="cart-total">Subtotal: <strong>{{ cart.total_price | money_with_currency }}</strong></p>
+      <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+    </div>
+  {%- endif -%}
+</div>
+
+<!-- Overlay -->
+<div id="cart-overlay" class="cart-overlay"></div>
+
+<script>
+  const cartDrawer = document.getElementById('cart-drawer');
+  const cartOverlay = document.getElementById('cart-overlay');
+  const openCartBtn = document.getElementById('open-cart');
+  const closeCartBtn = document.getElementById('close-cart');
+
+  function openCartDrawer() {
+    cartDrawer.classList.add('open');
+    cartOverlay.classList.add('open');
+  }
+
+  function closeCartDrawer() {
+    cartDrawer.classList.remove('open');
+    cartOverlay.classList.remove('open');
+  }
+
+  document.addEventListener("product:added", ()=> {
+    openCartDrawer()
+  })
+
+  openCartBtn.addEventListener('click', () => {
+    openCartDrawer();
+  });
+
+  closeCartBtn.addEventListener('click', () => {
+    closeCartDrawer();
+  });
+
+  cartOverlay.addEventListener('click', () => {
+    closeCartDrawer();
+  });
+</script>
+
+<style>
+  /* Base Reset */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Overlay */
+  .cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 99;
+  }
+
+  /* Cart Drawer */
+  .cart-drawer {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 500px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-drawer.open {
+    right: 0;
+  }
+
+  .cart-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Header */
+  .cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .close-cart-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Cart Items */
+  .cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .cart-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .cart-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .item-details {
+    flex: 1;
+  }
+
+  .item-title {
+    margin: 0 0 5px;
+    font-weight: bold;
+  }
+
+  .item-price {
+    margin: 0 0 10px;
+    color: #666;
+  }
+
+  /* Quantity */
+  .quantity-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .qty-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    height: 30px;
+  }
+
+  .qty-btn {
+    background: #eee;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+
+  /* Footer */
+  .cart-footer {
+    padding: 20px;
+    border-top: 1px solid #eee;
+  }
+
+  .subtotal {
+    margin-bottom: 15px;
+  }
+
+  .checkout-btn {
+    display: block;
+    width: 100%;
+    background: #007ace;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .checkout-btn:hover {
+    background: #005fa3;
+  }
+
+  /* Trigger Button */
+  .open-cart-btn {
+    margin: 20px;
+    padding: 10px 20px;
+    background: #007ace;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>

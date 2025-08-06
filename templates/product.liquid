@@ -78,6 +78,38 @@
 </div>
 
 <script>
+  document.querySelector("[action='/cart/add']").addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let addToCartForm = document.querySelector('form[action$="/cart/add"]');
+    let formData = new FormData(addToCartForm);
+
+    formData.append("sections", "cart-drawer")
+
+    fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        document.dispatchEvent(new CustomEvent("product:added"))
+        return response.json();
+      })
+      .then(data => {
+        const newCartDrawer = data.sections['cart-drawer'];
+        if (newCartDrawer) {
+          const parser = new DOMParser();
+          const dom = parser.parseFromString(newCartDrawer, 'text/html');
+          document.querySelector("#cart-drawer #items").innerHTML = dom.querySelector("#items").innerHTML
+          document.querySelector("#cart-drawer #cart-total").innerHTML = dom.querySelector("#cart-total").innerHTML
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  });
+</script>
+
+<script>
   var splide = new Splide('#main-slider', {
     width: 600,
     height: 300,
