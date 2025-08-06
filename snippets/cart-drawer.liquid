@@ -9,7 +9,13 @@
   </div>
 
   {%- if cart.empty? -%}
-    <p>Cart is empty</p>
+    <div class="cart-items" id="items">
+      <p>Cart is empty</p>
+    </div>
+    <div class="cart-footer" style="display: none;">
+      <p class="subtotal" id="cart-total">Subtotal: <strong>{{ cart.total_price | money_with_currency }}</strong></p>
+      <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
+    </div>
   {%- else -%}
     <div class="cart-items" id="items">
       <!-- Example cart item -->
@@ -25,6 +31,7 @@
               <input type="number" value="{{ item.quantity }}" min="1" class="qty-input">
               <button class="qty-btn plus">+</button>
             </div>
+            <a href="{{ item.url_to_remove }}" class="remove-btn">Remove</a>
           </div>
         </div>
       {%- endfor -%}
@@ -60,6 +67,7 @@
 
   document.addEventListener("product:added", ()=> {
     openCartDrawer()
+    document.querySelector(".cart-footer").style.display = "block"
   })
 
   openCartBtn.addEventListener('click', () => {
@@ -177,6 +185,20 @@
     align-items: center;
     gap: 5px;
   }
+
+  .remove-btn {
+    padding: 6px 12px;
+    background-color: #f44336;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .remove-btn:hover {
+    background-color: #d32f2f;
+  }
+
 
   .qty-input {
     width: 40px;
