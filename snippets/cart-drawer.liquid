@@ -13,7 +13,9 @@
       <p>Cart is empty</p>
     </div>
     <div class="cart-footer" style="display: none;">
-      <p class="subtotal" id="cart-total">Subtotal: <strong>{{ cart.total_price | money_with_currency }}</strong></p>
+      <p class="subtotal" id="cart-total">
+        Subtotal: <strong>{{ cart.total_price | money_with_currency }}</strong>
+      </p>
       <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
     </div>
   {%- else -%}
@@ -42,7 +44,9 @@
     </div>
 
     <div class="cart-footer">
-      <p class="subtotal" id="cart-total">Subtotal: <strong>{{ cart.total_price | money_with_currency }}</strong></p>
+      <p class="subtotal" id="cart-total">
+        Subtotal: <strong>{{ cart.total_price | money_with_currency }}</strong>
+      </p>
       <a href="/checkout" class="checkout-btn">Proceed to Checkout</a>
     </div>
   {%- endif -%}
@@ -50,63 +54,6 @@
 
 <!-- Overlay -->
 <div id="cart-overlay" class="cart-overlay"></div>
-
-<script>
-  const cartDrawer = document.getElementById('cart-drawer');
-  const cartOverlay = document.getElementById('cart-overlay');
-  const openCartBtn = document.getElementById('open-cart');
-  const closeCartBtn = document.getElementById('close-cart');
-
-  function openCartDrawer() {
-    cartDrawer.classList.add('open');
-    cartOverlay.classList.add('open');
-  }
-
-  function closeCartDrawer() {
-    cartDrawer.classList.remove('open');
-    cartOverlay.classList.remove('open');
-  }
-
-  document.addEventListener("product:added", ()=> {
-    openCartDrawer()
-    document.querySelector(".cart-footer").style.display = "block"
-  })
-
-  openCartBtn.addEventListener('click', () => {
-    openCartDrawer();
-  });
-
-  closeCartBtn.addEventListener('click', () => {
-    closeCartDrawer();
-  });
-
-  cartOverlay.addEventListener('click', () => {
-    closeCartDrawer();
-  });
-
-  document.addEventListener("refresh:cart", (e) => {
-    refreshCartDrawer()
-  })
-
-  async function refreshCartDrawer() {
-    try {
-      const response = await fetch('/?section_id=cart-drawer');
-      if (!response.ok) throw new Error('Failed to fetch cart drawer');
-
-      const html = await response.text();
-      const parser = new DOMParser();
-      const dom = parser.parseFromString(html, 'text/html');
-      document.querySelector("#cart-drawer #items").innerHTML = dom.querySelector("#items").innerHTML
-      document.querySelector("#cart-drawer #cart-total").innerHTML = dom.querySelector("#cart-total").innerHTML
-
-      if (dom.querySelector("[cart-empty]")) {
-        document.querySelector(".cart-footer").style.display = "none";
-      }
-    } catch (error) {
-      console.error('Error refreshing cart drawer:', error);
-    }
-  }
-</script>
 
 <style>
   /* Base Reset */
@@ -128,6 +75,40 @@
     pointer-events: none;
     transition: opacity 0.3s ease;
     z-index: 99;
+  }
+
+  /* Loading Overlay */
+  .cart-drawer.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 200;
+  }
+
+  /* Spinner */
+  .cart-drawer.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 4px solid #ccc;
+    border-top-color: #007ace;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 201;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   /* Cart Drawer */
@@ -224,7 +205,6 @@
     background-color: #d32f2f;
   }
 
-
   .qty-input {
     width: 40px;
     text-align: center;
@@ -278,3 +258,63 @@
     cursor: pointer;
   }
 </style>
+
+<script>
+  const cartDrawer = document.getElementById('cart-drawer');
+  const cartOverlay = document.getElementById('cart-overlay');
+  const openCartBtn = document.getElementById('open-cart');
+  const closeCartBtn = document.getElementById('close-cart');
+
+  function openCartDrawer() {
+    cartDrawer.classList.add('open');
+    cartOverlay.classList.add('open');
+  }
+
+  function closeCartDrawer() {
+    cartDrawer.classList.remove('open');
+    cartOverlay.classList.remove('open');
+  }
+
+  document.addEventListener('product:added', () => {
+    openCartDrawer();
+    document.querySelector('.cart-footer').style.display = 'block';
+  });
+
+  openCartBtn.addEventListener('click', () => {
+    openCartDrawer();
+  });
+
+  closeCartBtn.addEventListener('click', () => {
+    closeCartDrawer();
+  });
+
+  cartOverlay.addEventListener('click', () => {
+    closeCartDrawer();
+  });
+
+  document.addEventListener('refresh:cart', (e) => {
+    refreshCartDrawer();
+  });
+
+  async function refreshCartDrawer() {
+    try {
+      document.querySelector(".cart-drawer").classList.add("loading")
+      const response = await fetch('/?section_id=cart-drawer');
+      if (!response.ok) throw new Error('Failed to fetch cart drawer');
+
+      const html = await response.text();
+      const parser = new DOMParser();
+      const dom = parser.parseFromString(html, 'text/html');
+      document.querySelector('#cart-drawer #items').innerHTML = dom.querySelector('#items').innerHTML;
+      document.querySelector('#cart-drawer #cart-total').innerHTML = dom.querySelector('#cart-total').innerHTML;
+
+      if (dom.querySelector('[cart-empty]')) {
+        document.querySelector('.cart-footer').style.display = 'none';
+      }
+    } catch (error) {
+      console.error('Error refreshing cart drawer:', error);
+    }
+
+    document.querySelector(".cart-drawer").classList.remove("loading")
+  }
+</script>
