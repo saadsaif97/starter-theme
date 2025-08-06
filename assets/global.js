@@ -58,10 +58,30 @@ class QuantityBtns extends HTMLElement {
       }
     });
 
-    this.minusBtn.addEventListener("click", (e) => {
+    this.minusBtn.addEventListener("click", async (e) => {
       e.preventDefault();
 
-      console.log("minus");
+      const updatedQty = this.qty - 1;
+
+      console.log("minus:", updatedQty, this.variantId);
+
+      let updates = {
+        [this.variantId]: updatedQty,
+      };
+
+      try {
+        const res = await fetch(window.Shopify.routes.root + "cart/update.js", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ updates }),
+        });
+
+        document.dispatchEvent(new CustomEvent("refresh:cart"))
+      } catch (error) {
+        console.log("error plus:", error);
+      }
     });
   }
 }
