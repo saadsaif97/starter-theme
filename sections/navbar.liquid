@@ -4,7 +4,7 @@
       <a href="/">
         {%- if settings.logo == blank -%}
           <h3>{{ shop.name }}</h3>
-          {%- else -%}
+        {%- else -%}
           <img src="{{ settings.logo |  image_url: width: 120 }}" alt="{{ shop.name }}">
         {%- endif -%}
       </a>
@@ -12,11 +12,11 @@
 
     <nav class="navbar">
       <ul class="nav-links">
-        {%- for link in settings.header_nav.links -%}
+        {%- for link in section.settings.header_nav.links -%}
           <li class="menu-item">
             <a class="{%- if link.active -%}active{%- endif -%}" href="{{ link.url }}">{{ link.title }}</a>
             {%- if link.handle == 'catalog' -%}
-              {% render "mega-menu" %}
+              {% render 'mega-menu' %}
             {%- endif -%}
           </li>
         {%- endfor -%}
@@ -31,6 +31,24 @@
     </div>
   </div>
 </header>
+
+{% schema %}
+{
+  "name": "Navbar",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "header_nav",
+      "label": "Header navigation"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Navbar"
+    }
+  ]
+}
+{% endschema %}
 
 <style>
   /* Basic Reset */
