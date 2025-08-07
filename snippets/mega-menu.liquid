@@ -1,0 +1,88 @@
+<div class="mega-menu">
+  <div class="mega-columns">
+    <div class="column">
+      <h4>Category 1</h4>
+      <ul>
+        <li><a href="#">Link One</a></li>
+        <li><a href="#">Link Two</a></li>
+        <li><a href="#">Link Three</a></li>
+        <li><a href="#">Link Four</a></li>
+      </ul>
+    </div>
+    <div class="column">
+      <h4>Category 2</h4>
+      <ul>
+        <li><a href="#">Link Five</a></li>
+        <li><a href="#">Link Six</a></li>
+        <li><a href="#">Link Seven</a></li>
+        <li><a href="#">Link Eight</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mega-banner">
+    <a href="#">
+      <img src="https://via.placeholder.com/300x200?text=Promo+Banner" alt="Promo Banner">
+    </a>
+  </div>
+</div>
+
+<style>
+  /* Mega Menu */
+  .mega-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100vw;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .menu-item:hover .mega-menu {
+    display: flex;
+  }
+
+  .mega-columns {
+    display: flex;
+    gap: 2rem;
+    flex: 1 1 60%;
+  }
+
+  .column h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #111;
+  }
+
+  .column ul {
+    list-style: none;
+  }
+
+  .column ul li {
+    margin-bottom: 0.5rem;
+  }
+
+  .column ul li a {
+    color: #555;
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .column ul li a:hover {
+    text-decoration: underline;
+  }
+
+  /* Banner */
+  .mega-banner {
+    flex: 1 1 40%;
+  }
+
+  .mega-banner img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+  }
+</style>
