@@ -1,0 +1,122 @@
+<section class="collection-section">
+  <div class="container">
+    <h1 class="collection-title">All Products</h1>
+
+    {% paginate collection.products by 8 %}
+      <div class="product-grid">
+        {%- for collection_product in collection.products -%}
+          <div class="product-card">
+            <a href="{{ collection_product.url }}">
+              <img
+                src="{{ collection_product.featured_image |  image_url: width: 300 }}"
+                alt="{{ collection_product.title }}"
+              >
+              <h2 class="product-title">{{ collection_product.title }}</h2>
+              <p class="product-price">{{ collection_product.price | money_with_currency }}</p>
+            </a>
+          </div>
+        {%- endfor -%}
+      </div>
+      <div class="pagination">
+        {{- paginate | default_pagination -}}
+      </div>
+    {% endpaginate %}
+  </div>
+</section>
+
+<style>
+  .collection-section {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+  }
+
+  .collection-section .container {
+    flex-direction: column;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .collection-title {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .product-grid {
+    display: grid;
+    gap: 20px;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .product-card {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    padding: 15px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .product-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .product-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .product-title {
+    font-size: 18px;
+    margin: 10px 0 5px;
+    color: #333;
+  }
+
+  .product-price {
+    font-size: 16px;
+    color: #666;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    font-family: sans-serif;
+  }
+
+  .pagination span {
+    display: inline-block;
+  }
+
+  .pagination a {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .pagination a:hover {
+    background-color: #0077cc;
+    color: #fff;
+    border-color: #0077cc;
+  }
+
+  .pagination .current {
+    padding: 8px 12px;
+    background-color: #0077cc;
+    color: #fff;
+    border: 1px solid #0077cc;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+</style>

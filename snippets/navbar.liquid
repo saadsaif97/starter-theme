@@ -12,10 +12,9 @@
 
     <nav class="navbar">
       <ul class="nav-links">
-        <li><a href="/">Home</a></li>
-        <li><a href="/collections/all">Shop</a></li>
-        <li><a href="/pages/about">About</a></li>
-        <li><a href="/pages/contact">Contact</a></li>
+        {%- for link in settings.header_nav.links -%}
+          <li><a class="{%- if link.active -%}active{%- endif -%}" href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
       </ul>
     </nav>
 
@@ -73,6 +72,10 @@
     color: #333;
     font-weight: 500;
     transition: color 0.3s ease;
+  }
+
+  .navbar .nav-links a.active {
+    font-weight: bold;
   }
 
   .navbar .nav-links a:hover {
