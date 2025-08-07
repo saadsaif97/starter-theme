@@ -1,7 +1,7 @@
 {%- assign menu_1 = block.settings.menu_1 -%}
 {%- assign menu_2 = block.settings.menu_2 -%}
 
-<div class="mega-menu">
+<div class="mega-menu" id="{{ block.id }}">
   <div class="mega-columns">
     {%- if menu_1 != blank -%}
       <div class="column">
@@ -36,6 +36,22 @@
     </div>
   {%- endif -%}
 </div>
+
+<script>
+  document.addEventListener("shopify:block:select", (e) => {
+    const blockId = "{{ block.id }}";
+    if (e.detail?.blockId === blockId) {
+      document.getElementById(blockId)?.classList.add("force-show");
+    }
+  });
+
+  document.addEventListener("shopify:block:deselect", (e) => {
+    const blockId = "{{ block.id }}";
+    if (e.detail?.blockId === blockId) {
+      document.getElementById(blockId)?.classList.remove("force-show");
+    }
+  });
+</script>
 
 <style>
   /* Mega Menu */
@@ -90,6 +106,14 @@
   .column ul li {
     margin-bottom: 0.5rem;
   }
+
+  .mega-menu.force-show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    display: flex !important;
+  }
+
 
   .column ul li a {
     color: #555;
