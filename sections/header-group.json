@@ -12,6 +12,21 @@
   "sections": {
     "navbar_agRmEc": {
       "type": "navbar",
+      "blocks": {
+        "mega_menu_BHgDFY": {
+          "type": "mega_menu",
+          "settings": {
+            "handle": "catalog",
+            "menu_1": "snowboards",
+            "menu_2": "cars",
+            "image": "shopify://shop_images/theme_cover_image.jpg",
+            "image_url": "shopify://products/the-3p-fulfilled-snowboard"
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_BHgDFY"
+      ],
       "name": "Navbar",
       "settings": {
         "header_nav": "main-menu"

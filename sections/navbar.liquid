@@ -15,9 +15,11 @@
         {%- for link in section.settings.header_nav.links -%}
           <li class="menu-item">
             <a class="{%- if link.active -%}active{%- endif -%}" href="{{ link.url }}">{{ link.title }}</a>
-            {%- if link.handle == 'catalog' -%}
-              {% render 'mega-menu' %}
-            {%- endif -%}
+            {%- for block in section.blocks -%}
+              {%- if block.settings.handle == link.handle -%}
+                {% render 'mega-menu', block: block %}
+              {%- endif -%}
+            {%- endfor -%}
           </li>
         {%- endfor -%}
       </ul>
@@ -47,6 +49,11 @@
       "type": "mega_menu",
       "name": "Mega menu",
       "settings": [
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "Mege menu handle"
+        },
         {
           "type": "link_list",
           "id": "menu_1",
