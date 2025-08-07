@@ -1,7 +1,7 @@
 {%- assign menu_1 = block.settings.menu_1 -%}
 {%- assign menu_2 = block.settings.menu_2 -%}
 
-<div class="mega-menu" id="{{ block.id }}">
+<div class="mega-menu" id="{{ block.id }}" {{ block.shopify_attributes }}>
   <div class="mega-columns">
     {%- if menu_1 != blank -%}
       <div class="column">
@@ -37,21 +37,25 @@
   {%- endif -%}
 </div>
 
-<script>
-  document.addEventListener("shopify:block:select", (e) => {
-    const blockId = "{{ block.id }}";
-    if (e.detail?.blockId === blockId) {
-      document.getElementById(blockId)?.classList.add("force-show");
-    }
-  });
+{%- if request.design_mode -%}
+  <script>
+    document.addEventListener('shopify:block:select', function (e) {
+      console.log('shopify:block:select', e);
+      const blockEl = document.getElementById(e.detail.blockId);
+      if (blockEl) {
+        blockEl.classList.add('force-show');
+      }
+    });
 
-  document.addEventListener("shopify:block:deselect", (e) => {
-    const blockId = "{{ block.id }}";
-    if (e.detail?.blockId === blockId) {
-      document.getElementById(blockId)?.classList.remove("force-show");
-    }
-  });
-</script>
+    document.addEventListener('shopify:block:deselect', function (e) {
+      console.log('shopify:block:deselect', e);
+      const blockEl = document.getElementById(e.detail.blockId);
+      if (blockEl) {
+        blockEl.classList.remove('force-show');
+      }
+    });
+  </script>
+{%- endif -%}
 
 <style>
   /* Mega Menu */
@@ -113,7 +117,6 @@
     pointer-events: auto !important;
     display: flex !important;
   }
-
 
   .column ul li a {
     color: #555;
