@@ -1,6 +1,3 @@
-<!-- Cart Drawer Trigger Button -->
-<button id="open-cart" class="open-cart-btn">🛒 Cart</button>
-
 <!-- Cart Drawer -->
 <div id="cart-drawer" class="cart-drawer">
   <div class="cart-header">
@@ -121,7 +118,7 @@
     background-color: #fff;
     box-shadow: -3px 0 10px rgba(0, 0, 0, 0.1);
     transition: right 0.3s ease;
-    z-index: 100;
+    z-index: 1000;
     display: flex;
     flex-direction: column;
   }
@@ -280,7 +277,8 @@
     document.querySelector('.cart-footer').style.display = 'block';
   });
 
-  openCartBtn.addEventListener('click', () => {
+  openCartBtn.addEventListener('click', (e) => {
+    e.preventDefault()
     openCartDrawer();
   });
 
