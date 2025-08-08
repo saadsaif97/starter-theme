@@ -63,10 +63,34 @@
   <!-- Right Pane: Info -->
   <div class="product-details">
     <h1 class="product-title">{{ product.title }}</h1>
-    <p class="product-price">{{ product.price | money_with_currency }}</p>
+    <p id="price" class="product-price">{{ product.price | money_with_currency }}</p>
     <div class="product-description">
       {{ product.description }}
     </div>
+
+    <div class="variant-selector">
+      {% for option in product.options_with_values -%}
+        <fieldset>
+          <legend>{{ option.name }}</legend>
+
+          {%- for value in option.values -%}
+            <label for="{{ option.name }}-{{ value.name }}">
+              <input
+                type="radio"
+                name="{{ option.name }}"
+                {% if value.selected %}
+                  checked
+                {% endif %}
+                value="{{ value.name }}"
+                id="{{ option.name }}-{{ value.name }}"
+              >
+              {{ value.name }}
+            </label>
+          {%- endfor -%}
+        </fieldset>
+      {%- endfor %}
+    </div>
+
     {% form 'product', product %}
       <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
@@ -77,6 +101,54 @@
   </div>
 </div>
 
+<script data-product-variants>
+  {{- product.variants | json -}}
+</script>
+
+<script>
+  const variants = JSON.parse(document.querySelector('[data-product-variants]').innerHTML);
+  document.addEventListener("DOMContentLoaded", () => {
+    onVariantChange();
+  });
+
+  document.querySelectorAll(".variant-selector input").forEach(input => {
+    input.addEventListener("change", (e) => {
+        onVariantChange();
+    })
+  })
+
+  async function onVariantChange() {
+    let option1 = null;
+    let option2 = null;
+    let option3 = null;
+    document.querySelectorAll("input[type='radio']:checked").forEach((selectedInput, idx) => {
+      if (idx == 0) option1 = selectedInput.value;
+      if (idx == 1) option2 = selectedInput.value;
+      if (idx == 2) option3 = selectedInput.value;
+    });
+    const selectedVariant = variants.find(variant => variant.option1 == option1 && variant.option2 == option2 && variant.option3 == option3);
+    console.log('selected values: ', selectedVariant);
+    const variantId = selectedVariant.id;
+
+    updateVariantInURL(variantId);
+
+    const url = `{{ product.handle }}?variant=${variantId}&section_id=updated-product`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Failed to fetch updated product data');
+
+    const html = await response.text();
+    const parser = new DOMParser();
+    const dom = parser.parseFromString(html, 'text/html');
+    document.querySelector('#price').innerHTML = dom.querySelector('#price').innerHTML;
+  }
+
+  function updateVariantInURL(variantId) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("variant", variantId);
+    window.history.replaceState({}, "", url);
+  }
+</script>
+
 <script>
   document.querySelector("[action='/cart/add']").addEventListener('submit', (e) => {
     e.preventDefault();
@@ -84,15 +156,15 @@
     let addToCartForm = document.querySelector('form[action$="/cart/add"]');
     let formData = new FormData(addToCartForm);
 
-    formData.append("sections", "cart-drawer")
+    formData.append('sections', 'cart-drawer');
 
     fetch(window.Shopify.routes.root + 'cart/add.js', {
       method: 'POST',
       body: formData,
     })
       .then((response) => {
-        document.dispatchEvent(new CustomEvent("product:added"))
-        document.dispatchEvent(new CustomEvent("refresh:cart"))
+        document.dispatchEvent(new CustomEvent('product:added'));
+        document.dispatchEvent(new CustomEvent('refresh:cart'));
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -190,6 +262,12 @@
     font-size: 1rem;
     line-height: 1.6;
     margin-bottom: 30px;
+  }
+
+  .variant-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 
   .add-to-cart {
