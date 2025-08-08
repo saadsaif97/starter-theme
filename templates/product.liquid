@@ -130,6 +130,7 @@
     console.log('selected values: ', selectedVariant);
     const variantId = selectedVariant.id;
 
+    document.querySelector("[name='id']").value = variantId
     updateVariantInURL(variantId);
 
     const url = `{{ product.handle }}?variant=${variantId}&section_id=updated-product`;
