@@ -28,7 +28,7 @@
     <div class="cart-icon">
       <a id="open-cart" href="/cart">
         🛒
-        <span class="cart-count">2</span>
+        <span data-count="0" id="item-count">0</span>
       </a>
     </div>
   </div>
@@ -151,7 +151,7 @@
     position: relative;
   }
 
-  .cart-count {
+  #item-count {
     position: absolute;
     top: -8px;
     right: -10px;

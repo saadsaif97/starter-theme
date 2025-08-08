@@ -254,6 +254,9 @@
     border-radius: 4px;
     cursor: pointer;
   }
+  #item-count[data-count='0'] {
+    display: none;
+  }
 </style>
 
 <script>
@@ -294,6 +297,10 @@
     refreshCartDrawer();
   });
 
+  document.addEventListener("DOMContentLoaded", () => {
+    refreshCartDrawer();
+  })
+
   async function refreshCartDrawer() {
     try {
       document.querySelector(".cart-drawer").classList.add("loading")
@@ -305,6 +312,8 @@
       const dom = parser.parseFromString(html, 'text/html');
       document.querySelector('#cart-drawer #items').innerHTML = dom.querySelector('#items').innerHTML;
       document.querySelector('#cart-drawer #cart-total').innerHTML = dom.querySelector('#cart-total').innerHTML;
+      document.querySelector('#open-cart #item-count').innerHTML = dom.querySelector('#item-count').innerHTML;
+      document.querySelector('#open-cart #item-count').setAttribute("data-count", dom.querySelector('#item-count').innerHTML)
 
       if (dom.querySelector('[cart-empty]')) {
         document.querySelector('.cart-footer').style.display = 'none';

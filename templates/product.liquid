@@ -92,16 +92,7 @@
     })
       .then((response) => {
         document.dispatchEvent(new CustomEvent("product:added"))
-        return response.json();
-      })
-      .then(data => {
-        const newCartDrawer = data.sections['cart-drawer'];
-        if (newCartDrawer) {
-          const parser = new DOMParser();
-          const dom = parser.parseFromString(newCartDrawer, 'text/html');
-          document.querySelector("#cart-drawer #items").innerHTML = dom.querySelector("#items").innerHTML
-          document.querySelector("#cart-drawer #cart-total").innerHTML = dom.querySelector("#cart-total").innerHTML
-        }
+        document.dispatchEvent(new CustomEvent("refresh:cart"))
       })
       .catch((error) => {
         console.error('Error:', error);
