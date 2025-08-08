@@ -9,12 +9,6 @@
  */
 {
   "sections": {
-    "heading_1we1231": {
-      "type": "heading",
-      "settings": {
-        "title": "Hello world"
-      }
-    },
     "featured_products_gyU8zX": {
       "type": "featured-products",
       "name": "Feature Products",
@@ -28,7 +22,6 @@
     }
   },
   "order": [
-    "heading_1we1231",
     "featured_products_gyU8zX"
   ]
 }
