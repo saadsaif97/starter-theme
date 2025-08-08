@@ -2,39 +2,41 @@
 {%- assign menu_2 = block.settings.menu_2 -%}
 
 <div class="mega-menu" id="{{ block.id }}" {{ block.shopify_attributes }}>
-  <div class="mega-columns">
-    {%- if menu_1 != blank -%}
-      <div class="column">
-        <h4>{{ menu_1.title }}</h4>
-        <ul>
-          {%- for m1_link in menu_1.links -%}
-            <li>
-              <a href="{{ m1_link.title }}">{{ m1_link.title }}</a>
-            </li>
-          {%- endfor -%}
-        </ul>
-      </div>
-    {%- endif -%}
-    {%- if menu_2 != blank -%}
-      <div class="column">
-        <h4>{{ menu_2.title }}</h4>
-        <ul>
-          {%- for m2_link in menu_2.links -%}
-            <li>
-              <a href="{{ m2_link.title }}">{{ m2_link.title }}</a>
-            </li>
-          {%- endfor -%}
-        </ul>
+  <div style="max-width: 1100px;">
+    <div class="mega-columns">
+      {%- if menu_1 != blank -%}
+        <div class="column">
+          <h4>{{ menu_1.title }}</h4>
+          <ul>
+            {%- for m1_link in menu_1.links -%}
+              <li>
+                <a href="{{ m1_link.title }}">{{ m1_link.title }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+      {%- if menu_2 != blank -%}
+        <div class="column">
+          <h4>{{ menu_2.title }}</h4>
+          <ul>
+            {%- for m2_link in menu_2.links -%}
+              <li>
+                <a href="{{ m2_link.title }}">{{ m2_link.title }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    </div>
+    {%- if block.settings.image != blank -%}
+      <div class="mega-banner">
+        <a href="{{ block.settings.image_url }}">
+          <img src="{{ block.settings.image |  image_url: width: 500 }}" alt="Promo Banner">
+        </a>
       </div>
     {%- endif -%}
   </div>
-  {%- if block.settings.image != blank -%}
-    <div class="mega-banner">
-      <a href="{{ block.settings.image_url }}">
-        <img src="{{ block.settings.image |  image_url: width: 500 }}" alt="Promo Banner">
-      </a>
-    </div>
-  {%- endif -%}
 </div>
 
 {%- if request.design_mode -%}
