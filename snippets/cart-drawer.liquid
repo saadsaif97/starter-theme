@@ -25,14 +25,16 @@
           <div class="item-details">
             <p class="item-title">{{ item.title }}</p>
             <p class="item-price">{{ item.price | money_with_currency }}</p>
-            <quantity-btns data-variant-id="{{ item.variant.id }}" class="quantity-wrapper">
-              <button class="qty-btn minus">−</button>
-              <input type="number" value="{{ item.quantity }}" min="1" class="qty-input">
-              <button class="qty-btn plus">+</button>
-            </quantity-btns>
-            <delete-btn>
-              <a href="{{ item.url_to_remove }}" class="remove-btn">Remove</a>
-            </delete-btn>
+            <div style="display: flex; width; 100%; justtify-content: space-between;">
+              <quantity-btns data-variant-id="{{ item.variant.id }}" class="quantity-wrapper">
+                <button class="qty-btn minus">−</button>
+                <input type="number" value="{{ item.quantity }}" min="1" class="qty-input">
+                <button class="qty-btn plus">+</button>
+              </quantity-btns>
+              <delete-btn>
+                <a href="{{ item.url_to_remove }}" class="remove-btn">Remove</a>
+              </delete-btn>
+            </div>
           </div>
         </div>
       {%- endfor -%}
