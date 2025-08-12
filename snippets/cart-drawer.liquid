@@ -25,7 +25,7 @@
           <div class="item-details">
             <p class="item-title">{{ item.title }}</p>
             <p class="item-price">{{ item.price | money_with_currency }}</p>
-            <div style="display: flex; width; 100%; justtify-content: space-between;">
+            <div style="display: flex; width; 100%; justify-content: space-between; align-items: center;">
               <quantity-btns data-variant-id="{{ item.variant.id }}" class="quantity-wrapper">
                 <button class="qty-btn minus">−</button>
                 <input type="number" value="{{ item.quantity }}" min="1" class="qty-input">
